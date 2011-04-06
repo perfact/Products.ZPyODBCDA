@@ -1,0 +1,117 @@
+ <dtml-var manage_page_header>
+   <dtml-var manage_tabs>
+     <dtml-var "manage_form_title(this(), _,form_title='Zpyodbc DataBase Adapter tables browser')">   
+
+      <table cellspacing="2" cellpadding="2" border=0 width=100%>
+        <tr>
+      <td><div class="form-label">Id</div></td>
+      <td align="LEFT"><div class="form-label"><dtml-var id></div></td>
+    </tr>
+    <tr>
+      <td><div class="form-label">Title</div></td>
+      <td align="LEFT"><div class="form-label"><dtml-var title></div></td>
+    </tr>
+    <tr>
+      <td><div class="form-label">ODBC Connection String</div></td>
+      <td align="LEFT"><dtml-var connx_string></td>
+    </tr>
+    <tr>
+     <td colspan=2>
+      <dtml-if connected>
+<div class="form-label">The database connection is <em><b>OPEN</b></em>.</div><br>
+<dtml-else>
+<div class="form-label">The database connection is <em><b>NOT OPEN</b></em>.</div><br>
+</dtml-if>
+</td>
+</tr>
+<tr><td colspan=2 height="10">&nbsp;</td></tr>
+<!-- Added for pyodbc -->
+<dtml-if tablename>
+ <tr>
+   <td colspan=2>Table <font color=#c96b2c><b><dtml-var "tablename"></b></font> Description</td>
+ </tr>
+ <tr><td colspan=2 height="10">&nbsp;</td></tr>
+ <tr>
+   <td align=center colspan=2>
+
+  <!-- if the connection is open -->
+  <dtml-if "manage_get_table_infos(tablename=tablename)">
+
+     <table border=1 width="80%">
+       <tr bgcolor="#cccccc">
+      <th>Num.</th><th>Field Name</th><th>Type Name</th><th>NULLable</th><th>Length</th>
+       </tr>
+   
+
+   <dtml-in "manage_get_table_infos(tablename=tablename)" mapping sort=attnum>
+     <tr>
+       <td><b><dtml-var attnum></b></td>
+       <td align=center>
+         <dtml-if expr="is_foreign_key(tablename=tablename, field=attname)">
+            <a href="manage_browser?tablename=<dtml-var expr="is_foreign_key(tablename=tablename, field=attname)">" title="Foreign key from: <dtml-var expr="is_foreign_key(tablename=tablename, field=attname)">"><font color="#4bc42d"><b><dtml-var "attname"></b></font></a>
+         <dtml-else>
+            <dtml-if "is_primary_key(tablename=tablename, field=attname)">
+               <font color=#f70404><b><dtml-var "attname"></b></font>
+            <dtml-else>
+               <dtml-var "attname">
+            </dtml-if>
+         </dtml-if>
+       </td>
+       <td align=center><dtml-var typname></td>
+          <dtml-if "_.int(attnotnull) == 1">
+            <td align=center><b>Yes</b></td>
+          <dtml-else>
+            <td align=center><b>No</b></td>
+          </dtml-if>
+          <dtml-if "_.int(attlen) != -1">
+            <td align=center>
+              <dtml-var attlen>
+            </td>
+          <dtml-else>
+          <td bgcolor=#cccccc>&nbsp;</td>              
+          </dtml-if>
+     </tr>  
+   </dtml-in>
+     </table>
+
+  <dtml-else>
+     <h4><i>No tables found !!! Check your connection ...</i></h4>
+  </dtml-if>
+   </td>
+ </tr>
+<dtml-else>
+ <tr>
+   <td colspan=2 align=center valign=center>
+
+     <!-- if the connection is open -->
+     <dtml-if manage_get_tables>
+
+    <table widht="80%" border=1>
+       <tr bgcolor="#cccccc"><th>Table Type</th><th>Table Name</th></tr>
+           <dtml-in manage_get_tables mapping sort=tablename>  
+        <tr><td align=center><font color=#4bc42d><b><dtml-var "tabletype"></b></font></td>
+            <td align=center><a href="manage_browser?tablename=<dtml-var tablename>"><b><dtml-var "tablename"></b></a>
+            </td>
+        </tr>
+           </dtml-in>
+         </table>
+     <dtml-else>
+        <h4><i>No tables found !!! Check your connection ...</i></h4>
+     </dtml-if>
+   </td>
+ </tr>
+
+</dtml-if>
+
+<!-- End Added -->
+
+</td>
+<tr>
+<tr>
+  </table>
+<dtml-comment>
+  <tr>
+    <td colspan=2 align=center><dtml-var ZpyodbcDA_logo></td>
+  </tr>
+</dtml-comment>
+ <dtml-var manage_page_footer>

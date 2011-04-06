@@ -1,0 +1,67 @@
+<dtml-var manage_page_header>
+  <dtml-var manage_tabs>
+    <dtml-var "manage_form_title(this(), _,form_title='Status Z PyODBC DataBase Adaptor')"> 
+      <table cellspacing="2" cellpadding="2" border="0">
+    <tr>
+      <td colspan="2" align="right">
+        <a href="http://code.google.com/p/zpyodbcda/">ZPyODBCDA project Homepage</a><br />
+        <a href="http://code.google.com/p/zpyodbcda/source/browse/trunk">ZPyODBCDA project SVN</a>
+      </td>  
+    </tr>
+    <tr>
+      <td><div class="form-label">Id</div></td>
+      <td align="LEFT"><dtml-var id></td>
+    </tr>
+    <tr>
+      <td><div class="form-label">Title</div></td>
+      <td align="LEFT"><dtml-var title></td>
+    </tr>
+    
+    <tr><td><br /></td></tr>
+    <tr>
+      <td><div class="form-label">ODBC Connection String</div></td>
+      <td align="LEFT"><font color="#F00000"><dtml-var connx_string></font></td>
+    </tr>
+    <tr>
+      <td><div class="form-label">Auto-commit Enabled</div></td>
+      <td align="LEFT"><dtml-var auto_commit></td>
+    </tr>
+    <tr>
+    <tr><td><br /><br /></td></tr>
+    <tr>
+      <td><div class="form-label">Data source connected to</div></td>
+      <td align="LEFT"><dtml-var expr="get_backend_info()"></td>
+    </tr>
+<td colspan=2>
+<dtml-if connected>
+  <div class="form-label">The database connection is <font color="#CCCCCC"><em><b>OPENED</b></em></font>.<br>
+  <form action="manage_close_connection" method="get">
+     <input type="SUBMIT" value="Close Database Connection">
+  </form>
+<dtml-else>
+  <div class="form-label">The database connection is <font color="#CCCCCC"><em><b>CLOSED</b></em></font>.<br>
+  <form action="manage_open_connection" method="get">
+     <input type="SUBMIT" value="Open Database Connection">
+  </form>
+</dtml-if>
+
+<!-- Added for pyodbc -->
+<form action="manage_MaxRows" method="get">
+<table border="0" cellspacing="2" cellpadding"2">
+<tr><td><br /></td></tr>
+<tr>    
+  <td><div class="form-label">Maximun number of rows to fetch for one query:</div></td>
+  <td align="left"><div class="form-element"><input type="text" name="MaxRows:int" maxlength="10" value="<dtml-var MaxRows>" size="10" /></div></td>    
+</tr>
+<tr>
+  <td colspan="2" align="center"><input type="SUBMIT" value=" Change settings "></td>
+</tr>
+</table>
+  </form>
+
+<!-- End Added -->
+
+</td>
+<tr>
+  </table>
+ <dtml-var manage_page_footer>

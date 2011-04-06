@@ -1,0 +1,31 @@
+Changelog
+=========
+
+1.0.7 (2010-07-5)
+----------------
+
+    * Plone 4 Compatibility [Jiangwen365]
+
+1.0.7 (2009-02-16)
+-------------------
+
+    * Database connection fails using pyodbc 2.1.4 [Jiangwen365]
+    * Starting from this version, source code has been uploaded to google SVN.
+      [Jiangwen365]
+
+1.0.6 ()
+-------------------
+
+    * code optimization [Jiangwen365]
+
+1.0.5 ()
+-------------------
+
+    * fix crash in 1.0.4 [Jiangwen365]
+    * improved some coding [Jiangwen365]
+
+1.0.4 ()
+-------------------
+
+    * Typo found in pyodbcconnectionTestForm.dtml [Jiangwen365]
+    * datetime.date values should be converted to DateTime? objects [Jiangwen365]

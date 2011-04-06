@@ -1,0 +1,65 @@
+
+ <dtml-var manage_page_header>
+   <dtml-var manage_tabs>
+    <dtml-var "manage_form_title(this(), _,form_title='Edit Z pyodbc DataBase Adaptor')">
+    <form action="manage_edit" method="POST">
+      <table cellspacing="2" cellpadding="2" border="0">
+        <tr>
+      <td><div class="form-label">Id</div></td>
+      <td align="LEFT"><div class="form-label"><dtml-var id></div></td>
+    </tr>
+
+    <tr>
+      <td><div class="form-label">Title</div></td>
+      <td align="LEFT"><div class="form-element"><input type="TEXT" name="title" size="40" value="<dtml-var title html_quote>" /></div>
+      </td>
+    </tr>
+    <tr><td><br /></td></tr>
+    <tr>
+      <td><div class="form-label">ODBC Connection String</div></td>
+      <td align="LEFT"><div class="form-element"><textarea rows="4" cols="60" wrap="on" name="connection_string"><dtml-var connx_string html_quote></textarea></div>
+      </td>
+    </tr>
+        <tr><td>&nbsp;</td>
+            <td align="LEFT" valign="TOP" colspan="2"><font size="-1">Some connection string examples :
+                <br/>DRIVER={SQL Server};SERVER=localhost;DATABASE=testdb;UID=me;PWD=pass
+                <br/>DRIVER={FreeTDS};SERVER=localhost;DATABASE=testdb;UID=me;PWD=pass 
+                <br/>Driver={SQL Server};Server=(local);Trusted_Connection=Yes;Database=Sales;
+                <br/>Driver={Microsoft ODBC for Oracle};Server=ORACLE8i7;Persist Security Info=False;Trusted_Connection=Yes
+                <br/>Driver={Microsoft Access Driver (*.mdb)};DBQ=c:\Sales.mdb
+                <br/>Driver={Microsoft Excel Driver (*.xls)};DBQ=c:\Sales.xls
+                <br/>DSN=dsnname
+                <br/>
+                <br/>
+                </font>
+            </td>
+    </tr>
+    <tr>
+      <td><div class="form-label">Auto-commit mode</div>
+      </td>
+      <td align="LEFT"><div class="form-element"><input name="auto_commit:string" type="CHECKBOX" value="OK" <dtml-if expr="auto_commit">CHECKED</dtml-if> /></div><i>Note: some ODBC sources do not support manual-commit mode!</i>
+          </td>
+    </tr>
+    <tr>
+      <td><div class="form-label">Connect immediately</div></td>
+      <td align="LEFT"><div class="form-element"><input name="connected" type="CHECKBOX" value="YES" CHECKED /></div>
+          </td>
+    </tr>
+
+<!-- Added for pyodbc -->
+    <tr>
+      <td><div class="form-label">Maximun number of rows to fetch for one query:</div></td>
+      <td align="LEFT"><div class="form-element"><input name="MaxRows:int" type="text" value="<dtml-var MaxRows>" maxlength="10" size="10" /></div>
+          </td>
+    </tr>
+
+<!-- End Added -->
+        <tr>
+      <td></td>
+      <td><br><input type="SUBMIT" value="Change"></td>
+    </tr>
+
+      </table>
+    </form>
+
+<dtml-var manage_page_footer>
