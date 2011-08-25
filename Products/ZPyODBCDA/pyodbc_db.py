@@ -21,6 +21,8 @@
 
 import pyodbc
 
+import datetime
+
 from decimal import Decimal
 from Shared.DC.ZRDB.TM import TM
 import string, sys
@@ -29,6 +31,11 @@ from string import strip, split, find,replace
 from types import *
 
 DB_Error = pyodbc.Error
+
+def convert9(value):
+    # Data Type 9, not recognized by ODBC
+    # is a Null
+    return None
 
 class DB(TM):
         """DB class from pyodbc driver"""
@@ -40,6 +47,9 @@ class DB(TM):
                 self._MaxRows = conn_param['MaxRows']
                 
                 self._conx = pyodbc.connect(self._conxString, autocommit = self._auto_commit)
+                # Here we add a new data type converter
+                self._conx.add_output_converter(9, convert9)
+                
                 self._cursor = self._conx.cursor
                 self._numTry = 0
                 self._numMaxTry = 5
