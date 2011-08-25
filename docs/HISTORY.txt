@@ -1,13 +1,18 @@
 Changelog
 =========
 
-1.0.7 (2010-07-5)
-----------------
+1.0.9 (unreleased)
+--------------------
+
+    * Eggfication [erico_andrei]
+
+1.0.8 (2010-07-05)
+--------------------
 
     * Plone 4 Compatibility [Jiangwen365]
 
 1.0.7 (2009-02-16)
--------------------
+--------------------
 
     * Database connection fails using pyodbc 2.1.4 [Jiangwen365]
     * Starting from this version, source code has been uploaded to google SVN.

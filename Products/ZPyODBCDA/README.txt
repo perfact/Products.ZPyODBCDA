@@ -68,9 +68,10 @@ in order to see the effects of the product installation.
 Sponsoring
 ----------
 
-Adaptation of this product was sponsored by 
-`TRT13 <http://www.trt13.jus.br/>`_ and implemented by 
-`Simples Consultoria <http://www.simplesconsultoria.com.br/>`_.
+Adaptation of this product was sponsored by:
+
+    * `TRT13 <http://www.trt13.jus.br/>`_
+    * `Simples Consultoria <http://www.simplesconsultoria.com.br/>`_.
 
 
 Credits
@@ -80,3 +81,8 @@ Credits
     * Simples Consultoria (products at simplesconsultoria dot com dot br) - 
       Egg implementation
     
+
+
+
+
+
