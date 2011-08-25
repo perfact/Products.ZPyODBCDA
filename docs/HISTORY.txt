@@ -4,7 +4,9 @@ Changelog
 1.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+    * Add missing import [erico_andrei]
+    
+    * Add an output convertion for a Null data type [erico_andrei]
 
 
 1.0.9 (2011-08-25)
