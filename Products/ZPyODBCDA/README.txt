@@ -26,7 +26,7 @@ Products.ZPyODBCDA requires Python 2.4 or higher.
 
 If your Zope runs on the win32 platform, you probably don't need any other moudules, as I already included pyodbc's binary code (pyodbc.pyd) in the package folder; for other platform like Linux, you may first need to install the pyodbc moudule for your Python instance.
 
-I hope this product can provide a more reliable free Zope/ODBC connec solution to you.
+I hope this product can provide a more reliable free Zope/ODBC connect solution for you.
 
 
 Requirements
@@ -80,8 +80,3 @@ Credits
     * Simples Consultoria (products at simplesconsultoria dot com dot br) - 
       Egg implementation
     
-
-
-
-
-
