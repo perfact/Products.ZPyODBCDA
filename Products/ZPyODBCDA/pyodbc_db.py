@@ -56,7 +56,8 @@ class DB(TM):
         self._auto_commit = conn_param['auto_commit']
         self._MaxRows = conn_param['MaxRows']
 
-        self._conx = pyodbc.connect(self._conxString, autocommit = self._auto_commit)
+        self._conx = pyodbc.connect(self._conxString,
+                                    autocommit=self._auto_commit)
         # Here we add a new data type converter
         self._conx.add_output_converter(9, convert9)
         
