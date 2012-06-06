@@ -28,7 +28,7 @@ setup(name='Products.ZPyODBCDA',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'pyodbc==2.1.8',
+          'pyodbc==3.0.3',
       ],
       entry_points="""
       # -*- Entry points: -*-
