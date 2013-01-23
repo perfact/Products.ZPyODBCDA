@@ -34,4 +34,3 @@ setup(name='Products.ZPyODBCDA',
       # -*- Entry points: -*-
       """,
       )
-
