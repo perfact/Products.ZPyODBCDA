@@ -103,7 +103,7 @@ class DB(TM):
             o_ret = o_cur.execute(ps_queryString)
         #Occasionally the connection is lost which I haven't figure out why,
         #but this re-connecting works for me very well. Need to improve though!
-        except pyodbc.OperationalError, mesg:
+        except pyodbc.Error, mesg:
             try:
                 o_cur.close()
                 self._conx.close()
