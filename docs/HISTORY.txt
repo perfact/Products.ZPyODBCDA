@@ -4,6 +4,8 @@ Changelog
 1.0.9.3 (unreleased)
 --------------------
 
+    * Expand cases for reconnection attempts on query errors() [tcurvelo]
+
     * Fix some pep8 issues [tcurvelo]
 
 
