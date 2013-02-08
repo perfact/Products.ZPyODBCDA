@@ -194,8 +194,6 @@ class DB(TM):
         o_cur.close()
         return tables
 
-        (tablename)
-
     def get_primaryKeys(self, table_name):
         o_cur = self._cursor()
         primaryKeys = []
@@ -219,15 +217,14 @@ class DB(TM):
     def _finish(self):
         try:
             self._conx.commit()
-            pass
-        except (DB_Error), s_mesg:
-            raise sys.exc_type, sys.exc_value, sys.exc_traceback
+        except DB_Error:
+            raise
 
     def _abort(self):
         try:
             self._conx.rollback()
-        except (DB_Error), s_mesg:
-            raise sys.exc_type, sys.exc_value, sys.exc_traceback
+        except DB_Error:
+            raise
 
     def _begin(self):
         pass
