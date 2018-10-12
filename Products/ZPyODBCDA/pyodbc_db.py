@@ -28,7 +28,20 @@ if sys.version_info[1] <= 4:
 else:
     pyodbc_dir = os.path.dirname(os.path.realpath(__file__)) + '\pyodbc26'
 sys.path.append(pyodbc_dir)
+
+# Patch JH 08/2016: Decimals are formatted according to the locale set
+# at "import" time.
+import locale
+orig_locale = locale.getlocale(locale.LC_NUMERIC)
+locale.setlocale(locale.LC_NUMERIC,'C')
+# End of Patch JH 08/2016
+
 import pyodbc
+
+# Patch JH 08/2016: Restore original locale.
+locale.setlocale(locale.LC_NUMERIC,orig_locale)
+# End of Patch JH 08/2016
+
 sys.path.remove(pyodbc_dir)
 
 
@@ -142,6 +155,14 @@ class DB(TM):
             o_result = o_cur.fetchmany(pl_maxRows)
 
         o_cur.close()
+
+        # JJ: Make sure all names are strings (utf-8 encoded)
+        def to_string(val):
+            if isinstance(val, unicode):
+                return val.encode('utf-8')
+            return val
+        for item in o_items:
+            item['name'] = to_string(item['name'])
 
         # if any pyodbc's object type needs to be converted to
         # Zope's object type.
