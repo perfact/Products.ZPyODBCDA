@@ -111,6 +111,10 @@ class DB(TM):
         self._register()
         #This seems not necessary and sometimes breaks certain SQLs.
         #ps_queryString = replace(ps_queryString,"\n"," ")
+        # pyodbc version 4 needs to receive unicode, not bytes.
+        if (pyodbc.version.split('.')[0] == '4' and 
+                isinstance(ps_queryString, bytes)):
+            ps_queryString = ps_queryString.decode('utf-8')
         try:
             o_cur = self._cursor()
             o_ret = o_cur.execute(ps_queryString)
