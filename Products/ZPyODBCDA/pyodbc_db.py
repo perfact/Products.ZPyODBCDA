@@ -132,17 +132,20 @@ class DB(TM):
             o_cur = self._cursor()
             o_ret = o_cur.execute(ps_queryString)
         
-        while True:
-            o_desc = o_cur.description
-       
-            if pl_maxRows == None:
-                o_result = o_cur.fetchmany(self._MaxRows)
-            else:
-                o_result = o_cur.fetchmany(pl_maxRows)
-            if not o_cur.nextset():
-                break
-
-        o_cur.close()
+        try:
+            while True:
+                o_desc = o_cur.description
+        
+                if pl_maxRows == None:
+                    o_result = o_cur.fetchmany(self._MaxRows)
+                else:
+                    o_result = o_cur.fetchmany(pl_maxRows)
+                if not o_cur.nextset():
+                    break
+        except:
+            raise
+        finally:
+            o_cur.close()
 
         if o_desc is None:
             return (), ()
