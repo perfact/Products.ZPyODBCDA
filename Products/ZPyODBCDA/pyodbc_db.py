@@ -136,10 +136,11 @@ class DB(TM):
             while True:
                 o_desc = o_cur.description
         
-                if pl_maxRows == None:
-                    o_result = o_cur.fetchmany(self._MaxRows)
-                else:
-                    o_result = o_cur.fetchmany(pl_maxRows)
+                if o_desc:
+                    if pl_maxRows == None:
+                        o_result = o_cur.fetchmany(self._MaxRows)
+                    else:
+                        o_result = o_cur.fetchmany(pl_maxRows)
                 if not o_cur.nextset():
                     break
         except:
