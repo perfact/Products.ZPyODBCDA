@@ -143,8 +143,6 @@ class DB(TM):
                         o_result = o_cur.fetchmany(pl_maxRows)
                 if not o_cur.nextset():
                     break
-        except:
-            raise
         finally:
             o_cur.close()
 
