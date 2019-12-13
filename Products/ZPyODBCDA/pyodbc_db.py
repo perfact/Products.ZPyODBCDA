@@ -131,10 +131,22 @@ class DB(TM):
             self._cursor = self._conx.cursor
             o_cur = self._cursor()
             o_ret = o_cur.execute(ps_queryString)
-        o_desc = o_cur.description
+        
+        try:
+            while True:
+                o_desc = o_cur.description
+        
+                if o_desc:
+                    if pl_maxRows == None:
+                        o_result = o_cur.fetchmany(self._MaxRows)
+                    else:
+                        o_result = o_cur.fetchmany(pl_maxRows)
+                if not o_cur.nextset():
+                    break
+        finally:
+            o_cur.close()
 
         if o_desc is None:
-            o_cur.close()
             return (), ()
 
         o_items = map(lambda x: {'name': x[0], 'type': x[1], 'dsize': x[2],
@@ -152,13 +164,6 @@ class DB(TM):
         float_field_ids = [i for i in range(len(field_types))
                            if field_types[i] in (float,)
                           ]
-
-        if pl_maxRows == None:
-            o_result = o_cur.fetchmany(self._MaxRows)
-        else:
-            o_result = o_cur.fetchmany(pl_maxRows)
-
-        o_cur.close()
 
         # JJ: Make sure all names are strings (utf-8 encoded)
         def to_string(val):
