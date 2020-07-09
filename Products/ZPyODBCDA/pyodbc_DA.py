@@ -20,7 +20,7 @@
 
 
 from Shared.DC.ZRDB.Connection import DTMLFile, Connection
-from pyodbc_db import DB
+from .pyodbc_db import DB
 
 database_type = 'PyODBC'
 

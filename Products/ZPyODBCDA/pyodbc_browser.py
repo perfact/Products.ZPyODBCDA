@@ -20,7 +20,7 @@
 # Here are requests to have informations about tables.
 
 from .pyodbc_DA import pyodbcConnection
-from pyodbc_DA import DTMLFile
+from .pyodbc_DA import DTMLFile
 
 
 def addpyodbcConnectionBrowser(self, id, title, connection_string,

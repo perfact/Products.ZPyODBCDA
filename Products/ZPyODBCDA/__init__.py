@@ -25,7 +25,7 @@ import traceback
 
 from .pyodbc_browser import pyodbcConnectionBrowser
 from .pyodbc_browser import addpyodbcConnectionBrowser
-from .pyodbc_browser import addpyodbcConnectionForm
+from .pyodbc_DA import addpyodbcConnectionForm
 
 
 def initialize(context):
