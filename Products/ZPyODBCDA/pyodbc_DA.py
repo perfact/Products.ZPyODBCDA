@@ -108,8 +108,6 @@ class pyodbcConnection(Connection):
         Connection.manage_edit(self, title, repr(
             conn_param), connected, REQUEST)
 
-    manage_testForm = DTMLFile('dtml/pyodbcconnectionTestForm', globals())
-
     def factory(self):
         return DB
 
