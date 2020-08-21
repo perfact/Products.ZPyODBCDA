@@ -146,10 +146,18 @@ class DB(TM):
         if o_desc is None:
             return (), ()
 
-        o_items = map(lambda x: {'name': x[0], 'type': x[1], 'dsize': x[2],
-                                 'isize': x[3], 'precision': x[4],
-                                 'scale': x[5], 'null': x[6]},
-                      o_desc)
+        o_items = [
+            {
+                'name': x[0],
+                'type': x[1],
+                'dsize': x[2],
+                'isize': x[3],
+                'precision': x[4],
+                'scale': x[5],
+                'null': x[6]
+            } for x in o_desc
+        ]
+
         field_types = [i['type'] for i in o_items]
 
         # get date field ids to be convert to DateTime type
