@@ -1,58 +1,52 @@
-##
-##Copyright (C) 2008 Henry Zhou <jiangwen365@gmail.com>
-## Copyright (C) 2001 Thierry MICHEL <thierry@nekhem.com>
-##
-## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 2 of the License, or
-## (at your option) any later version.
-##
-## This program is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License
-## along with this program; if not, write to the Free Software
-## Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
-##
-##
+#
+# Copyright (C) 2008 Henry Zhou <jiangwen365@gmail.com>
+# Copyright (C) 2001 Thierry MICHEL <thierry@nekhem.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+#
 
 
+import six
+import pyodbc
+import locale
 import os
 import sys
 import datetime
+from DateTime import DateTime
+from Shared.DC.ZRDB.TM import TM
 
 if sys.version_info[1] <= 4:
-    pyodbc_dir = os.path.dirname(os.path.realpath(__file__)) + '\pyodbc24'
+    pyodbc_dir = os.path.dirname(os.path.realpath(__file__)) + '\\pyodbc24'
 else:
-    pyodbc_dir = os.path.dirname(os.path.realpath(__file__)) + '\pyodbc26'
+    pyodbc_dir = os.path.dirname(os.path.realpath(__file__)) + '\\pyodbc26'
 sys.path.append(pyodbc_dir)
 
 # Patch JH 08/2016: Decimals are formatted according to the locale set
 # at "import" time.
-import locale
 orig_locale = locale.getlocale(locale.LC_NUMERIC)
-locale.setlocale(locale.LC_NUMERIC,'C')
+locale.setlocale(locale.LC_NUMERIC, 'C')
 # End of Patch JH 08/2016
 
-import pyodbc
 
 # Patch JH 08/2016: Restore original locale.
-locale.setlocale(locale.LC_NUMERIC,orig_locale)
+locale.setlocale(locale.LC_NUMERIC, orig_locale)
 # End of Patch JH 08/2016
 
 sys.path.remove(pyodbc_dir)
 
-
-
-from decimal import Decimal
-from Shared.DC.ZRDB.TM import TM
-import string
-import sys
-from DateTime import DateTime
-from string import strip, split, find, replace
-from types import *
 
 DB_Error = pyodbc.Error
 
@@ -87,11 +81,12 @@ class DB(TM):
     def setMaxRows(self, MaxRows):
         try:
             self._MaxRows = int(MaxRows)
-        except ValueError, mesg:
+        except ValueError as mesg:
             raise mesg
 
     def connect(self, ps_queryString):
         from time import sleep
+        mesg = ''
         while (self._numTry < self._numMaxTry):
             self._numTry = self._numTry + 1
             try:
@@ -99,7 +94,8 @@ class DB(TM):
                                             self._auto_commit)
                 self._cursor = self._conx.cursor
                 return self.query(ps_queryString)
-            except pyodbc.OperationalError, mesg:
+            except pyodbc.OperationalError as err:
+                mesg = err
                 sleep(5)
         self._numTry = 0
         raise mesg
@@ -109,35 +105,36 @@ class DB(TM):
 
     def query(self, ps_queryString, pl_maxRows=None):
         self._register()
-        #This seems not necessary and sometimes breaks certain SQLs.
-        #ps_queryString = replace(ps_queryString,"\n"," ")
+        # This seems not necessary and sometimes breaks certain SQLs.
+        # ps_queryString = ps_queryString.replace("\n"," ")
         # pyodbc version 4 needs to receive unicode, not bytes.
-        if (pyodbc.version.split('.')[0] == '4' and 
+        if (pyodbc.version.split('.')[0] == '4' and
                 isinstance(ps_queryString, bytes)):
             ps_queryString = ps_queryString.decode('utf-8')
         try:
             o_cur = self._cursor()
-            o_ret = o_cur.execute(ps_queryString)
-        #Occasionally the connection is lost which I haven't figure out why,
-        #but this re-connecting works for me very well. Need to improve though!
-        except pyodbc.Error, mesg:
+            o_cur.execute(ps_queryString)
+            # Occasionally the connection is lost which I haven't figured
+            # out why, but this re-connecting works for me very well.
+            # Need to improve though!
+        except pyodbc.Error:
             try:
                 o_cur.close()
                 self._conx.close()
-            except:
+            except Exception:
                 pass
             self._conx = pyodbc.connect(self._conxString,
                                         autocommit=self._auto_commit)
             self._cursor = self._conx.cursor
             o_cur = self._cursor()
-            o_ret = o_cur.execute(ps_queryString)
-        
+            o_cur.execute(ps_queryString)
+
         try:
             while True:
                 o_desc = o_cur.description
-        
+
                 if o_desc:
-                    if pl_maxRows == None:
+                    if pl_maxRows is None:
                         o_result = o_cur.fetchmany(self._MaxRows)
                     else:
                         o_result = o_cur.fetchmany(pl_maxRows)
@@ -149,25 +146,33 @@ class DB(TM):
         if o_desc is None:
             return (), ()
 
-        o_items = map(lambda x: {'name': x[0], 'type': x[1], 'dsize': x[2],
-                                 'isize': x[3], 'precision': x[4],
-                                 'scale': x[5], 'null': x[6]},
-                      o_desc)
+        o_items = [
+            {
+                'name': x[0],
+                'type': x[1],
+                'dsize': x[2],
+                'isize': x[3],
+                'precision': x[4],
+                'scale': x[5],
+                'null': x[6]
+            } for x in o_desc
+        ]
+
         field_types = [i['type'] for i in o_items]
 
         # get date field ids to be convert to DateTime type
         date_field_ids = [i for i in range(len(field_types))
                           if field_types[i] in (datetime.datetime,
                                                 datetime.date)
-                         ]
-        #get float field ids to be convert from decimal to float
+                          ]
+        # get float field ids to be convert from decimal to float
         float_field_ids = [i for i in range(len(field_types))
                            if field_types[i] in (float,)
-                          ]
+                           ]
 
         # JJ: Make sure all names are strings (utf-8 encoded)
         def to_string(val):
-            if isinstance(val, unicode):
+            if six.PY2 and isinstance(val, six.text_type):
                 return val.encode('utf-8')
             return val
         for item in o_items:
@@ -178,19 +183,20 @@ class DB(TM):
         if len(date_field_ids) + len(float_field_ids) > 0:
             for row in o_result:
                 for field_id in date_field_ids:
-                    if row[field_id] != None:
+                    if row[field_id] is not None:
                         # Currently we don't do timezones. Everything is UTC.
                         # Ideally we'd get the current Oracle timezone
                         # and use that.
-                        row[field_id] = DateTime(*(row[field_id].timetuple()[:6] + ('UTC',)))
+                        row[field_id] = DateTime(
+                            *(row[field_id].timetuple()[:6] + ('UTC',)))
                 for field_id in float_field_ids:
-                    if row[field_id] != None:
+                    if row[field_id] is not None:
                         row[field_id] = float(row[field_id])
 
         return o_items, o_result
 
     def _datetime_convert(self, dt, val):
-        if dt and (val != None):
+        if dt and (val is not None):
             # Currently we don't do timezones. Everything is UTC.
             # Ideally we'd get the current Oracle timezone and use that.
             x = val.timetuple()[:6] + ('UTC',)
@@ -198,7 +204,7 @@ class DB(TM):
         return val
 
     def _Decimal_convert(self, dt, val):
-        if dt and (val != None):
+        if dt and (val is not None):
             return float(val)
         return val
 
@@ -208,7 +214,7 @@ class DB(TM):
             dbinfo += self._conx.getinfo(pyodbc.SQL_DBMS_NAME) + ' '
             dbinfo += self._conx.getinfo(pyodbc.SQL_DBMS_VER) + ' '
             dbinfo += self._conx.getinfo(pyodbc.SQL_DATABASE_NAME) + ' '
-        except:
+        except Exception:
             pass
         return dbinfo
 
@@ -229,7 +235,7 @@ class DB(TM):
         primaryKeys = []
         try:
             primaryKeys = [p_key for p_key in o_cur.primaryKeys(table_name)]
-        except:
+        except Exception:
             pass
         o_cur.close()
         return primaryKeys
@@ -238,8 +244,9 @@ class DB(TM):
         o_cur = self._cursor()
         foreignKeys = []
         try:
-            foreignKeys = [f_key for f_key in o_cur.foreignKeys(foreignTable=table_name)]
-        except:
+            foreignKeys = [f_key for f_key in o_cur.foreignKeys(
+                foreignTable=table_name)]
+        except Exception:
             pass
         o_cur.close()
         return foreignKeys
