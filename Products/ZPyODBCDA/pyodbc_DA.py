@@ -123,5 +123,5 @@ class pyodbcConnection(Connection):
             }):
         for c in "\\\"\'\0\n\t\r\b":
             if v.find(c) > -1:
-                v = v.split(c).join(escapes[c])
+                v = escapes[c].join(v.split(c))
         return "'%s'" % v
