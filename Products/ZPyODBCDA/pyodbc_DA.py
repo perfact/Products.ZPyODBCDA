@@ -110,18 +110,3 @@ class pyodbcConnection(Connection):
 
     def factory(self):
         return DB
-
-    def sql_quote__(self, v, escapes={
-                '\\': '\\\\',
-                '\"': '\\\"',
-                '\'': '\\\'',
-                '\0': '\\0',
-                '\n': '\\n',
-                '\t': '\\t',
-                '\r': '\\r',
-                '\b': '\\n',
-            }):
-        for c in "\\\"\'\0\n\t\r\b":
-            if v.find(c) > -1:
-                v = escapes[c].join(v.split(c))
-        return "'%s'" % v
