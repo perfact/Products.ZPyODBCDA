@@ -134,10 +134,25 @@ class DB(TM):
                 o_desc = o_cur.description
 
                 if o_desc:
-                    if pl_maxRows is None:
-                        o_result = o_cur.fetchmany(self._MaxRows)
+                    max_rows = (pl_maxRows if pl_maxRows is not None
+                                else self._MaxRows)
+                    if max_rows:
+                        o_result = o_cur.fetchmany(max_rows)
+                        # Do not truncate a query result if it exceeds the
+                        # maximum row number set in either the connector or
+                        # query properties.
+                        if len(o_result) == max_rows:
+                            try:
+                                overshoot_result = o_cur.fetchone()
+                            except:
+                                overshoot_result = None
+                            if overshoot_result:
+                                assert False, (
+                                    "This query has returned more than "
+                                    "MaxRows results. Please raise "
+                                    "MaxRows or limit in SQL.")
                     else:
-                        o_result = o_cur.fetchmany(pl_maxRows)
+                        o_result = o_cur.fetchall()
                 if not o_cur.nextset():
                     break
         finally:
