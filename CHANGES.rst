@@ -1,3 +1,9 @@
+1.0.9.3.perfact5
+================
+
+- Raise an error if the result set of any query exceeds the maximum number of
+  rows configured in either the connector or the query properties.
+
 1.0.9.3.perfact4
 ================
 
