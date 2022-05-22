@@ -1,3 +1,8 @@
+1.0.9.3+perfact.5
+=================
+
+- Fix versioning to be PEP 440 compliant
+
 1.0.9.3.perfact5
 ================
 
