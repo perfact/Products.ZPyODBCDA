@@ -276,7 +276,7 @@ class DB(TM):
         try:
             self._conx.rollback()
         except DB_Error:
-            raise
+            self._conx.close()
 
     def _begin(self):
         pass
