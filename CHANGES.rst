@@ -1,3 +1,7 @@
+1.0.9.3+perfact.6
+=================
+- Close connection in rollback exception so it's reopenend later
+
 1.0.9.3+perfact.5
 =================
 
