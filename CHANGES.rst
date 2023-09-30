@@ -1,3 +1,8 @@
+1.0.9.3+perfact.7
+=================
+- Drop support for Python 2
+- Remove version pinning on pyodbc
+
 1.0.9.3+perfact.6
 =================
 - Close connection in rollback exception so it's reopenend later

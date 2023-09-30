@@ -19,7 +19,6 @@
 #
 
 
-import six
 import pyodbc
 import locale
 import os
@@ -144,7 +143,7 @@ class DB(TM):
                         if len(o_result) == max_rows:
                             try:
                                 overshoot_result = o_cur.fetchone()
-                            except:
+                            except Exception:
                                 overshoot_result = None
                             if overshoot_result:
                                 assert False, (
@@ -184,14 +183,6 @@ class DB(TM):
         float_field_ids = [i for i in range(len(field_types))
                            if field_types[i] in (float,)
                            ]
-
-        # JJ: Make sure all names are strings (utf-8 encoded)
-        def to_string(val):
-            if six.PY2 and isinstance(val, six.text_type):
-                return val.encode('utf-8')
-            return val
-        for item in o_items:
-            item['name'] = to_string(item['name'])
 
         # if any pyodbc's object type needs to be converted to
         # Zope's object type.
