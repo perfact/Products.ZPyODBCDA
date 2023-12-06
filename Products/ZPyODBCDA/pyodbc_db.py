@@ -46,7 +46,6 @@ locale.setlocale(locale.LC_NUMERIC, orig_locale)
 
 sys.path.remove(pyodbc_dir)
 
-
 DB_Error = pyodbc.Error
 
 
@@ -267,7 +266,11 @@ class DB(TM):
         try:
             self._conx.rollback()
         except DB_Error:
-            self._conx.close()
+            try:
+                self._conx.close()
+            except DB_Error:
+                # Due to T249828 we catch error that occurs during connection closing and ignore it.
+                pass
 
     def _begin(self):
         pass
