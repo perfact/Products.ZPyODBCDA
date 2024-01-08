@@ -8,17 +8,16 @@ version = open(os.path.join(
 setup(
     name='Products.ZPyODBCDA',
     version=version,
-    description="ODBC DA for Zope 2",
+    description="ODBC DA for Zope",
     long_description=(
         open(os.path.join("Products", "ZPyODBCDA", "README.txt")).read() +
         "\n" +
         open(os.path.join("docs", "HISTORY.txt")).read()
     ),
     # Get more strings from
-    # http://www.python.org/pypi?%3Aaction=list_classifiers
+    # https://pypi.org/classifiers
     classifiers=[
-        "Framework :: Zope2",
-        "Framework :: Zope3",
+        "Framework :: Zope",
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
@@ -33,8 +32,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
-        # -*- Extra requirements: -*-
-        'pyodbc==4.0.26',
+        'pyodbc',
     ],
     entry_points="""
     # -*- Entry points: -*-
