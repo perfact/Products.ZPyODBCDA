@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.0.9.4 (unreleased)
+--------------------
+
+    * Ignore error during connection closing [dlokic]
+
+
 1.0.9.3 (unreleased)
 --------------------
 
